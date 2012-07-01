@@ -5,7 +5,7 @@ sentry_replay.models
 :copyright: (c) 2012 by Eduard Carreras, see AUTHORS for more details.
 :license: BSD, see LICENSE for more details.
 """
-
+import socket
 from django import forms
 import sentry_replay
 from sentry.plugins import Plugin
@@ -40,5 +40,6 @@ class Replay(Plugin):
         data = event.as_dict()
         del data['id']
         data['message'] = event.message
+        data['server_name'] = socket.gethostname()
         data = client.encode(data)
         client.send_encoded(message=data)
